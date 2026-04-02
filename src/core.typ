@@ -5168,7 +5168,7 @@
     // without adding any visible space (the weak flag suppresses it when
     // adjacent to other spacing).
     // See: https://github.com/touying-typ/touying/issues/388
-    v(0pt, weak: true)
+    // v(0pt, weak: true)
   }
   let composer-with-side-by-side(..args) = {
     let effective-composer = if composer != auto {
