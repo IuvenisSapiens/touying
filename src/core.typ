@@ -5181,7 +5181,11 @@
     if type(effective-composer) == function {
       effective-composer(..args)
     } else {
-      components.side-by-side(columns: effective-composer, ..args)
+      components.side-by-side(
+        lazy-layout: false,
+        columns: effective-composer,
+        ..args,
+      )
     }
   }
   let bodies = bodies.pos()
@@ -5598,7 +5602,7 @@
 ///
 /// - composer (function, array, int, auto): The composer arranges multiple content bodies side by side.
 ///
-///   - `auto`: use the theme default (`components.side-by-side`)
+///   - `auto`: use the theme default (`components.side-by-side.with(lazy-layout: false)`)
 ///   - array, e.g. `(1fr, 2fr, 1fr)`: column widths for `side-by-side`
 ///   - int: equal columns shorthand
 ///   - function: fully custom layout, e.g. `grid.with(columns: 2)`
