@@ -1021,6 +1021,20 @@
             + repr(available-height)
             + ").",
         )
+      } else if content-height == 0pt {
+        warning(
+          "detecting slide content is empty at page "
+            + repr(here().page())
+            + " (slide "
+            + str(utils.slide-counter.get().last())
+            + ", subslide "
+            + str(self.subslide)
+            + ", content height: "
+            + repr(content-height)
+            + ", available height: "
+            + repr(available-height)
+            + ").",
+        )
       }
     })
   }
