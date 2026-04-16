@@ -225,12 +225,26 @@ Fletcher Animation in Touying:
 
 = Others
 
-== Side-by-side
+== Multiple columns
 
-#slide(composer: (1fr, 1fr))[
+#cols[
   First column.
 ][
   Second column.
+]
+
+== Multiple columns with equal height blocks
+
+#cols(columns: (1fr, 1fr), gutter: 1em)[
+  #emph-block[
+    First column with equal height: #lorem(10)
+    #lazy-v(1fr)
+  ]
+][
+  #emph-block[
+    Second column with equal height: : #lorem(15)
+    #lazy-v(1fr)
+  ]
 ]
 
 
