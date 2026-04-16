@@ -44,4 +44,5 @@
 #import "utils.typ"
 #import "magic.typ"
 #import "pdfpc.typ"
+#import "components.typ": cols, lazy-h, lazy-layout, lazy-v, side-by-side
 #import "components.typ"
