@@ -547,7 +547,7 @@ First, set up the reducer bindings (once, at the top of your file):
   [
     *CeTZ:* #v(-0.5em)
     ```typst
-    #import "@preview/cetz:0.4.2"
+    #import "@preview/cetz:0.5.0"
     #let cetz-canvas = touying-reducer.with(
       reduce: cetz.canvas,
       cover: cetz.draw.hide.with(bounds: true),
