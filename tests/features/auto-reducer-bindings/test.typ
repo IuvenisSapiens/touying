@@ -27,7 +27,7 @@
 
 
 == Test Alchemist
-#import "@preview/alchemist:0.1.9" as alch
+#import "@preview/alchemist:0.2.0" as alch
 #touying-reduce(alch, {
   alch.fragment(name: "A", "A")
   alch.single()
