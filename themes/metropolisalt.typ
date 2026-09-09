@@ -20,7 +20,7 @@
 ///   For example, `#slide(composer: (1fr, 2fr, 1fr))[A][B][C]` to split the slide into three parts. The first and the last parts will take 1/4 of the slide, and the second part will take 1/2 of the slide.
 ///
 ///   If you pass a non-function value like `(1fr, 2fr, 1fr)`, it will be assumed to be the first argument of the `cols` function.
-/// 
+///
 ///   The `cols` function is a simple wrapper of the `grid` function. It means you can use the `grid.cell(colspan: 2, ..)` to make the cell take 2 columns.
 ///
 ///   For example, `#slide(composer: 2)[A][B][#grid.cell(colspan: 2)[Footer]]` will make the `Footer` cell take 2 columns.
@@ -62,12 +62,22 @@
     pad(
       .5em,
       components.left-and-right(
-        text(fill: self.colors.neutral-darkest.lighten(40%), utils.call-or-display(self, self.store.footer)),
-        text(fill: self.colors.neutral-darkest, utils.call-or-display(self, self.store.footer-right)),
+        text(
+          fill: self.colors.neutral-darkest.lighten(40%),
+          utils.call-or-display(self, self.store.footer),
+        ),
+        text(fill: self.colors.neutral-darkest, utils.call-or-display(
+          self,
+          self.store.footer-right,
+        )),
       ),
     )
     if self.store.footer-progress {
-      place(bottom, components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light))
+      place(bottom, components.progress-bar(
+        height: 2pt,
+        self.colors.primary,
+        self.colors.primary-light,
+      ))
     }
   }
   let self = utils.merge-dicts(
@@ -84,7 +94,14 @@
     show: setting
     body
   }
-  touying-slide(self: self, config: config, repeat: repeat, setting: new-setting, composer: composer, ..bodies)
+  touying-slide(
+    self: self,
+    config: config,
+    repeat: repeat,
+    setting: new-setting,
+    composer: composer,
+    ..bodies,
+  )
 })
 
 /// Title slide for the presentation. You should update the information in the `config-info` function. You can also pass the information directly to the `title-slide` function.
@@ -112,9 +129,9 @@
 ) = touying-slide-wrapper(self => {
   self = utils.merge-dicts(
     self,
-    config,
     config-common(freeze-slide-counter: true),
     config-page(fill: self.colors.neutral-lightest),
+    config,
   )
   let info = self.info + args.named()
   let body = {
@@ -227,7 +244,12 @@
 /// - numbered (boolean): Indicates whether the heading is numbered.
 ///
 /// - body (auto): The body of the section. It will be passed by touying automatically.
-#let new-section-slide(config: (:), level: 1, numbered: true, body) = touying-slide-wrapper(self => {
+#let new-section-slide(
+  config: (:),
+  level: 1,
+  numbered: true,
+  body,
+) = touying-slide-wrapper(self => {
   let slide-body = {
     set std.align(horizon)
     show: pad.with(20%)
@@ -235,12 +257,20 @@
     stack(
       dir: ttb,
       spacing: 1em,
-      text(self.colors.neutral-darkest, utils.display-current-heading(level: level, numbered: numbered, style: auto)),
+      text(self.colors.neutral-darkest, utils.display-current-heading(
+        level: level,
+        numbered: numbered,
+        style: auto,
+      )),
       block(
         height: 2pt,
         width: 100%,
         spacing: 0pt,
-        components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light),
+        components.progress-bar(
+          height: 2pt,
+          self.colors.primary,
+          self.colors.primary-light,
+        ),
       ),
     )
     text(self.colors.neutral-dark, body)
@@ -252,6 +282,7 @@
   touying-slide(self: self, config: config, slide-body)
 })
 
+
 /// Focus on some content.
 ///
 /// Example: `#focus-slide[Wake up!]`
@@ -259,9 +290,14 @@
 /// - config (dictionary): The configuration of the slide. You can use `config-xxx` to set the configuration of the slide. For several configurations, you can use `utils.merge-dicts` to merge them.
 ///
 /// - align (alignment): The alignment of the content. Default is `horizon + center`.
-#let focus-slide(config: (:), align: horizon + center, body) = touying-slide-wrapper(self => {
+#let focus-slide(
+  config: (:),
+  align: horizon + center,
+  body,
+) = touying-slide-wrapper(self => {
   self = utils.merge-dicts(
     self,
+    config,
     config-common(freeze-slide-counter: true),
     config-page(fill: self.colors.neutral-dark, margin: 2em),
   )
@@ -348,7 +384,7 @@
 
   show: touying-slides.with(
     config-page(
-      paper: "presentation-" + aspect-ratio,
+      ..utils.page-args-from-aspect-ratio(aspect-ratio),
       header-ascent: 30%,
       footer-descent: 30%,
       margin: (top: 3em, bottom: 1.5em, x: 2em),
