@@ -104,6 +104,7 @@
   )
 })
 
+
 /// Title slide for the presentation. You should update the information in the `config-info` function. You can also pass the information directly to the `title-slide` function.
 ///
 /// Example:
@@ -201,8 +202,9 @@
   level: auto,
   title: [Outline],
   spacing: 2em,
+  after-sep: 0em,
   ..args,
-) = slide(title: title, config: config, self => {
+) = slide(config: config, self => {
   let named-args = args.named()
   let indent = if not "indent" in named-args.keys() { (1em,) } else {
     named-args.remove("indent")
@@ -219,6 +221,15 @@
   let numbering = if not "numbering" in named-args.keys() { ("1.",) } else {
     named-args.remove("numbering")
   }
+  place(hide(heading(
+    //place invisible heading so that the title is discoverable via get-current-heading
+    level: self.slide-level,
+    title,
+    bookmarked: false,
+    outlined: false,
+    numbering: none,
+  )))
+  v(after-sep)
   components.custom-progressive-outline(
     title: none,
     depth: if level != auto { level } else { self.slide-level },
@@ -250,13 +261,13 @@
   numbered: true,
   body,
 ) = touying-slide-wrapper(self => {
-  let slide-body = {
+  let setting(level, numbered, body) = {
     set std.align(horizon)
-    show: pad.with(20%)
-    set text(size: 1.2em)
+    show: pad.with(10%)
+    set text(size: 2em)
     stack(
       dir: ttb,
-      spacing: 1em,
+      spacing: 0.5em,
       text(self.colors.neutral-darkest, utils.display-current-heading(
         level: level,
         numbered: numbered,
@@ -279,7 +290,12 @@
     self,
     config-page(fill: self.colors.neutral-lightest),
   )
-  touying-slide(self: self, config: config, slide-body)
+  touying-slide(
+    self: self,
+    config: config,
+    setting: setting.with(level, numbered),
+    body,
+  )
 })
 
 
@@ -299,13 +315,35 @@
     self,
     config,
     config-common(freeze-slide-counter: true),
-    config-page(fill: self.colors.neutral-dark, margin: 2em),
+    // 3em: was 2em scaled by the focus text's own `set text(size: 1.5em)`.
+    config-page(fill: self.colors.neutral-dark, margin: 3em),
   )
-  set text(fill: self.colors.neutral-lightest, size: 1.5em)
-  touying-slide(self: self, config: config, std.align(align, body))
+  touying-slide(
+    self: self,
+    config: config,
+    setting: it => std.align(
+      align,
+      text(fill: self.colors.neutral-lightest, size: 1.5em, it),
+    ),
+    body,
+  )
 })
+/// Speaker-note panel for this theme. Only styling; `touying-notes` does the layout.
+#let notes(self: none, ..args) = touying-notes(
+  self: self,
+  header: self => pad(x: 32pt, y: 16pt, text(
+    fill: self.colors.neutral-lightest,
+    utils.display-current-heading(depth: self.slide-level),
+  )),
+  header-fill: self.colors.secondary,
+  fill: self.colors.neutral-lightest,
+  ..args,
+)
 
-/// Touying metropolisalt theme.
+
+
+
+/// Touying metropolis theme.
 ///
 /// Example:
 ///
@@ -391,6 +429,7 @@
     ),
     config-common(
       slide-fn: slide,
+      notes-fn: notes,
       new-section-slide-fn: new-section-slide,
     ),
     config-methods(
